@@ -149,7 +149,7 @@ public class Renderer {
     public void render(Map<String, Object> content) throws Exception {
     	String docType = (String) content.get(Crawler.Attributes.TYPE);
         String outputFilename = destination.getPath() + File.separatorChar + (String) content.get(Crawler.Attributes.URI);
-        if (outputFilename.lastIndexOf(".") > 0) {
+        if (outputFilename.lastIndexOf(".") > outputFilename.lastIndexOf(File.separatorChar)) {
         	outputFilename = outputFilename.substring(0, outputFilename.lastIndexOf("."));
         }
 
