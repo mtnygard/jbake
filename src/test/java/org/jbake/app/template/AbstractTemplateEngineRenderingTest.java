@@ -274,6 +274,29 @@ public abstract class AbstractTemplateEngineRenderingTest {
         }
         assertThat(output).doesNotContain("draft-paper.html");
     }
+        
+    @Test
+    public void renderPostWithoutExtension() throws Exception {
+        // setup
+        File subfolder = new File(destinationFolder, ".cache");
+        Renderer renderer = new Renderer(db, subfolder, templateFolder, config);
+        
+        String filename = "fifth-post";
+
+        File sampleFile = new File(sourceFolder.getPath() + File.separator + "content"
+                + File.separator + "blog" + File.separator + "2013" + File.separator + filename);
+        Map<String, Object> content = parser.processFile(sampleFile);
+        content.put(Crawler.Attributes.URI, "/" + filename);
+        renderer.render(content);
+        File outputFile = new File(subfolder, filename);
+        Assert.assertTrue(outputFile.exists());
+
+        // verify
+        String output = FileUtils.readFileToString(outputFile);
+        for (String string : getOutputStrings("post")) {
+            assertThat(output).contains(string);
+        }
+    }
 
     protected List<String> getOutputStrings(String type) {
         return outputStrings.get(type);
